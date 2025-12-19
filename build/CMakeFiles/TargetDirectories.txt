@@ -1,0 +1,3 @@
+/Users/matheus.uchoa/sideProjects/adriel/first_project/build/CMakeFiles/gst_player.dir
+/Users/matheus.uchoa/sideProjects/adriel/first_project/build/CMakeFiles/edit_cache.dir
+/Users/matheus.uchoa/sideProjects/adriel/first_project/build/CMakeFiles/rebuild_cache.dir
