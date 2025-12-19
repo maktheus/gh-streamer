@@ -26,6 +26,33 @@ The player leverages the `playbin` element, an auto-plugging pipeline that dynam
     *   **Decoder**: Automatically selected hardware-accelerated decoders (e.g., `vtdec` on macOS, `vaapidec` on Linux).
     *   **Sink**: `autovideosink` (OpenGL/Metal/X11).
 
+### 📐 Pipeline Architecture Diagram
+
+```mermaid
+graph LR
+    subgraph Core Application
+        GUI[Main Loop / GUI]
+        BusWatcher[Bus Watcher]
+    end
+
+    subgraph GStreamer Pipeline
+        Source[SoupHTTPSrc] -->|HLS/DASH| Demux[Adaptive Demuxer]
+        Demux -->|Audio| Q1[Queue]
+        Demux -->|Video| Q2[Queue]
+        Q1 --> ADec[Audio Decoder] --> ASink[Audio Sink]
+        Q2 --> VDec[Video Decoder] --> VSink[Video Sink]
+    end
+
+    GUI -.->|Control| Pipeline
+    Pipeline -.->|Messages| BusWatcher
+    BusWatcher -.->|Callbacks| GUI
+    
+    style Source fill:#f9f,stroke:#333,stroke-width:2px
+    style Demux fill:#bbf,stroke:#333,stroke-width:2px
+    style VDec fill:#bfb,stroke:#333,stroke-width:2px
+    style VSink fill:#dfd,stroke:#333,stroke-width:2px
+```
+
 For a deep dive into the design decisions, DRM strategy, and ABR logic, please refer to the [**Design Document**](design_doc.md).
 
 ## 🛠 Prerequisites
